@@ -1,7 +1,8 @@
 package com.example.whatsapp.data.repository
 
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthRepositoryImpl(): AuthRepository {
+class AuthRepositoryImpl @Inject constructor(): AuthRepository {
 }
