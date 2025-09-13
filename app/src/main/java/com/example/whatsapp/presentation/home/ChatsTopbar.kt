@@ -31,8 +31,7 @@ import coil3.compose.rememberAsyncImagePainter
 @Composable
 fun ChatsTopBar(
     onSearch: (String) -> Unit,
-    onProfileClick: () -> Unit,
-    userImage: Int?, // URL
+    userImage: String?, // URL
     userName: String
 ) {
     var isSearching by remember { mutableStateOf(false) }
@@ -63,7 +62,7 @@ fun ChatsTopBar(
                 )
             }
 
-            IconButton(onClick = onProfileClick) {
+            IconButton(onClick = { /* Profile icon click action */ }) {
                 if (userImage != null) {
                     Image(
                         painter = rememberAsyncImagePainter(userImage),

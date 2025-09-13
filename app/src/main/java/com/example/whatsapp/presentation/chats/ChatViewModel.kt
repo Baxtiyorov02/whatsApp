@@ -1,13 +1,16 @@
 package com.example.whatsapp.presentation.chats
 
 import androidx.lifecycle.ViewModel
+import com.example.whatsapp.data.repository.chat.MessageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(): ViewModel() {
+class ChatViewModel @Inject constructor(
+    private val messageRepository: MessageRepository
+): ViewModel() {
 
     // Dummy messages
     private val _messages = MutableStateFlow(
@@ -36,4 +39,6 @@ class ChatViewModel @Inject constructor(): ViewModel() {
         )
         _messages.value = _messages.value + newMessage
     }
+
+
 }

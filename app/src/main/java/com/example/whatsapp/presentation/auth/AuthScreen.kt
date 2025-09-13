@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.whatsapp.data.local.AuthPrefs
+import com.example.whatsapp.data.lokal.auth.AuthPrefs
 
 
 @Composable

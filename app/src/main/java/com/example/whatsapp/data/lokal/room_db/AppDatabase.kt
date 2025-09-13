@@ -1,4 +1,4 @@
-package com.example.whatsapp.data.lokal.db
+package com.example.whatsapp.data.lokal.room_db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

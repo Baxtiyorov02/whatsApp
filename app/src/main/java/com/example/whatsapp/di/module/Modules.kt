@@ -2,12 +2,16 @@ package com.example.whatsapp.di.module
 
 import android.content.Context
 import androidx.room.Room
-import com.example.whatsapp.data.lokal.db.AppDatabase
-import com.example.whatsapp.data.lokal.db.UserProfileDao
-import com.example.whatsapp.data.repository.AuthRepository
-import com.example.whatsapp.data.repository.AuthRepositoryImpl
+import com.example.whatsapp.data.lokal.room_db.AppDatabase
+import com.example.whatsapp.data.lokal.room_db.UserProfileDao
+import com.example.whatsapp.data.repository.auth.AuthRepository
+import com.example.whatsapp.data.repository.auth.AuthRepositoryImpl
 import com.example.whatsapp.data.repository.chat.MessageRepository
 import com.example.whatsapp.data.repository.chat.MessageRepositoryImpl
+import com.example.whatsapp.data.repository.home.HomeRepository
+import com.example.whatsapp.data.repository.home.HomeRepositoryImpl
+import com.example.whatsapp.data.repository.profile.ProfileRepository
+import com.example.whatsapp.data.repository.profile.ProfileRepositoryImpl
 import com.example.whatsapp.data.repository.user_profile.UserProfileRepository
 import com.example.whatsapp.data.repository.user_profile.UserProfileRepositoryImpl
 import dagger.Module
@@ -50,4 +54,13 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMessageRepository(): MessageRepository = MessageRepositoryImpl()
+
+    @Provides
+    @Singleton
+    fun provideProfileRepository(dao: UserProfileDao): ProfileRepository = ProfileRepositoryImpl(dao)
+
+    @Provides
+    @Singleton
+    fun provideHomeRepository(dao: UserProfileDao): HomeRepository = HomeRepositoryImpl(dao)
+
 }

@@ -1,4 +1,4 @@
-package com.example.whatsapp.data.lokal.db
+package com.example.whatsapp.data.lokal.room_db
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -16,4 +16,17 @@ interface UserProfileDao {
 
     @Query("DELETE FROM user_profile")
     suspend fun clearProfile()
+
+    @Query("UPDATE user_profile SET nickName = :nickName WHERE id = 1")
+    suspend fun updateNickName(nickName: String)
+
+    @Query("SELECT   avatarUrl FROM user_profile WHERE id = 1")
+      fun getAvatarUrl(): Flow<String?>
+
+    @Query("UPDATE user_profile SET avatarUrl = :avatarUrl WHERE id = 1")
+    suspend fun updateAvatarUrl(avatarUrl: String?)
+
+
+
+
 }
