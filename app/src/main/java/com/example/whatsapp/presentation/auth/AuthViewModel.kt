@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.whatsapp.data.local.AuthPrefs
 import com.example.whatsapp.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -13,6 +14,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
+
    private  val _uiState=mutableStateOf<AuthState>(AuthState.Idle)
     val uiState:State<AuthState> = _uiState
     var phoneNumber by mutableStateOf("")

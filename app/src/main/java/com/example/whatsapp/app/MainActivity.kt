@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.navigation.compose.rememberNavController
 import com.example.whatsapp.navigation.AppNavHost
+import com.example.whatsapp.ui.theme.WhatsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,8 +15,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val navController= rememberNavController()
-            AppNavHost(navController)
+
+            WhatsAppTheme {
+                AppNavHost()
+            }
+
+
         }
     }
    /* override fun onCreate(savedInstanceState: Bundle?) {

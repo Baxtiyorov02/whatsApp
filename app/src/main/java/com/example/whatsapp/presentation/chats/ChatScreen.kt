@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -33,16 +34,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.room.Entity
 import com.example.whatsapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
-    navController: NavHostController,
     userId: String,
     userName: String,
+    popBackStack: () -> Unit,
     viewModel: ChatViewModel = hiltViewModel()
 ) {
     val messages by viewModel.getMessages(userId).collectAsState(initial = emptyList())
@@ -54,11 +54,38 @@ fun ChatScreen(
         TopAppBar(
             title = { Text(userName) },
             navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(painter = painterResource(id = R.drawable.ic_arrow_back), contentDescription = "Back")
+                IconButton(onClick = { popBackStack() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_arrow_back),
+                        contentDescription = "Back",
+                        modifier = Modifier.size(30.dp)
+                    )
                 }
+            },
+            actions = {
+                // Call
+                IconButton(onClick = { /* TODO: Call screen ochish */ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_call),
+                        contentDescription = "Call",
+                        modifier = Modifier.size(36.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(24.dp))
+
+                // Video Call
+                IconButton(onClick = { /* TODO: Video Call screen ochish */ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_videocam),
+                        contentDescription = "Video Call",
+                        modifier = Modifier.size(36.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(24.dp))
+
             }
         )
+
 
         // Xabarlar ro‘yxati
         LazyColumn(
@@ -76,7 +103,9 @@ fun ChatScreen(
 
         // Xabar yozish qismi
         Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
@@ -127,6 +156,8 @@ fun MessageItem(message: Message) {
         }
     }
 }
+
 @Entity
 data class Message(
-    val id: String, val text: String, val isMine: Boolean)// true -> men yozgan xabar, false -> qarshi taraf
+    val userId: String, val text: String, val isMine: Boolean
+)// true -> men yozgan xabar, false -> qarshi taraf

@@ -20,16 +20,17 @@ class ChatViewModel @Inject constructor(): ViewModel() {
         )
     )
 
+    val usermessage: StateFlow<List<Message>> = _messages
+
     // Flow orqali userId bo‘yicha xabarlarni olish
-    fun getMessages(userId: String): StateFlow<List<Message>> {
-        val userMessages = _messages.value.filter { it.id == userId }
-        return MutableStateFlow(userMessages)
+    fun getMessages(id: String): StateFlow<List<Message>> {
+        return usermessage
     }
 
     // Xabar yuborish
     fun sendMessage(userId: String, text: String) {
         val newMessage = Message(
-            id = (_messages.value.size + 1).toString(),
+            userId = (_messages.value.size + 1).toString(),
             text = text,
             isMine = true
         )
