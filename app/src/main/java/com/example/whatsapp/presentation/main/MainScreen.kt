@@ -7,67 +7,84 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.whatsapp.navigation.Screen
-import com.example.whatsapp.presentation.home.HomeScreen
-import com.example.whatsapp.presentation.profile.ProfileScreen
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.whatsapp.core.BottomNavHost
+import com.example.whatsapp.ui.theme.LightBlue
+import com.example.whatsapp.ui.theme.MainColor
 
 @Composable
 fun MainScreen(
-    rootNavController: NavHostController
-){
+    popBackStack: () -> Unit,
+    navToChat: (String,String) -> Unit,
+) {
 
-    val navController= rememberNavController()
+
+    var selectedItem by remember {
+        mutableIntStateOf(0)
+    }
 
 
     Scaffold(
-        bottomBar =  {
-            NavigationBar {
-                val items = listOf(Screen.Home, Screen.Profile)
-                val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-
-
-                items.forEach { screen ->
+        bottomBar = {
+            NavigationBar(
+                containerColor = Color.White
+            ) {
+                BottomItems.entries.forEachIndexed { index, item ->
                     NavigationBarItem(
-                        icon = {
-                            when (screen) {
-                                Screen.Home -> Icon(Icons.Default.Home, contentDescription = null)
-                                Screen.Profile -> Icon(Icons.Default.Person, contentDescription = null)
-                                else -> { }
-                            }
-                        },
-                        label = { Text(screen.route) }, // istasang title qo‘shib olamiz
-                        selected = currentRoute == screen.route,
+                        selected = selectedItem == index,
                         onClick = {
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.startDestinationId)
-                                launchSingleTop = true
-                            }
-                        }
-
+                            selectedItem = index
+                        },
+                        label = {
+                            Text(
+                               text = item.title,
+                                color = if (selectedItem == index) MainColor else LightBlue
+                            )
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = "",
+                                tint = if (selectedItem == index) MainColor else LightBlue
+                            )
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            indicatorColor = Color.Transparent
+                        )
                     )
-
                 }
             }
         }
-    ) {  paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Home.route,
-            modifier = Modifier.padding(paddingValues)
-
-        ){
-            composable(Screen.Home.route) { HomeScreen(navController) }
-            composable(Screen.Profile.route) { ProfileScreen() }
-        }
+    ) {
+        BottomNavHost(
+            modifier = Modifier
+                .padding(it),
+            selectedItems = selectedItem,
+            popBackStack = {
+                popBackStack.invoke()
+            },
+            navToChat = {name,id->
+                navToChat.invoke(name,id)
+            }
+        )
     }
+}
 
+
+enum class BottomItems(
+    val title: String,
+    val icon: ImageVector,
+) {
+    Home("Home", Icons.Default.Home),
+    Profile("Profile", Icons.Default.Person)
 }

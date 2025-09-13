@@ -36,12 +36,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import com.example.whatsapp.navigation.Screen
 
 @Composable
 fun HomeScreen(
-    navController: NavHostController,
+    popBackStack: () -> Unit,
+    navToChat: (String, String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel() // Hilt bilan ViewModel
 ) {
     val users by viewModel.users.collectAsState(initial = emptyList())
@@ -53,14 +52,14 @@ fun HomeScreen(
                 onSearch = { query -> searchQuery = query },
                 onProfileClick = { /* Profile screenga o‘tish */ },
                 userImage = viewModel.currentUser?.avatar,
-                userName = viewModel.currentUser?.name ?: "Profile"
+                userName = viewModel.currentUser?.userName ?: "Profile"
             )
         }
     ) { paddingValues ->
 
         val filteredUsers = if (searchQuery.isEmpty()) {
             users
-        } else users.filter { it.name.contains(searchQuery, ignoreCase = true) }
+        } else users.filter { it.userName.contains(searchQuery, ignoreCase = true) }
 
         LazyColumn(
             modifier = Modifier
@@ -69,8 +68,11 @@ fun HomeScreen(
         ) {
             items(filteredUsers) { user ->
                 UserItem(user = user) {
+
+                    println("AAAAAAAAAAA:: userId=${user.userId}   userName=${user.userName}")
                     // User bosilganda ChatScreenga o‘tadi
-                    navController.navigate(Screen.Chats.createRoute(user.id, user.name))
+                    navToChat(user.userName, user.userId)
+
                 }
             }
         }
@@ -79,8 +81,8 @@ fun HomeScreen(
 
 // User data class
 data class User(
-    val id: String,
-    val name: String,
+    val userId: String,
+    val userName: String,
     val avatar: Int,
     val lastMessage: String
 )
@@ -117,7 +119,7 @@ fun UserItem(user: User, onClick: () -> Unit) {
             // Name va lastMessage
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = user.name,
+                    text = user.userName,
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                 )
                 Spacer(modifier = Modifier.height(4.dp))

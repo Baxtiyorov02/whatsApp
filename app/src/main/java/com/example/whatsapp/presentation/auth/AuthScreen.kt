@@ -14,12 +14,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.whatsapp.data.local.AuthPrefs
 
 
 @Composable
@@ -27,6 +30,8 @@ fun AuthScreen(
     viewModel: AuthViewModel = hiltViewModel(),
     onAuthSuccess: () -> Unit
 ) {
+    val contect= LocalContext.current
+    val authPrefs= remember { AuthPrefs(contect) }
     val state = viewModel.uiState.value
     Column(
         modifier = Modifier
@@ -81,7 +86,9 @@ fun AuthScreen(
                     Spacer(Modifier.height(16.dp))
 
                     Button(
-                        onClick = { viewModel.verifyCode(onAuthSuccess) },
+                        onClick = { viewModel.verifyCode(onAuthSuccess)
+                                  authPrefs.setLoggedIn(true)
+                                  },
                         enabled = viewModel.otpCode.length == 6,
                         modifier = Modifier.fillMaxWidth()
                     ) {
