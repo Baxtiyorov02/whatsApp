@@ -1,9 +1,8 @@
-package com.example.whatsapp.data.local
+package com.example.whatsapp.data.lokal.auth
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-
 
 class AuthPrefs(context: Context) {
     private val prefs: SharedPreferences =

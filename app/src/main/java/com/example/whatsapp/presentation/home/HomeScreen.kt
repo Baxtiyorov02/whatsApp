@@ -44,16 +44,17 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel() // Hilt bilan ViewModel
 ) {
     val users by viewModel.users.collectAsState(initial = emptyList())
+    val avatar by viewModel.getAvatarUrl().collectAsState(initial = null)
     var searchQuery by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
             ChatsTopBar(
                 onSearch = { query -> searchQuery = query },
-                onProfileClick = { /* Profile screenga o‘tish */ },
-                userImage = viewModel.currentUser?.avatar,
+                userImage = avatar,
                 userName = viewModel.currentUser?.userName ?: "Profile"
             )
+            println("AAAAAAAAAAAAAAAA $avatar")
         }
     ) { paddingValues ->
 

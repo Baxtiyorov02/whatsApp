@@ -1,4 +1,4 @@
-package com.example.whatsapp.data.repository
+package com.example.whatsapp.data.repository.auth
 
 import javax.inject.Inject
 import javax.inject.Singleton

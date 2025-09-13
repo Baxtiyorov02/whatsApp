@@ -28,7 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.rememberAsyncImagePainter
-
+import java.io.File
 
 @Composable
 fun ProfileSetupScreen(
@@ -61,7 +61,7 @@ fun ProfileSetupScreen(
         ) {
             if (viewModel.avatarUrl != null) {
                 Image(
-                    painter = rememberAsyncImagePainter(viewModel.avatarUrl),
+                    painter = rememberAsyncImagePainter(File(viewModel.avatarUrl!!)),
                     contentDescription = "Avatar",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()

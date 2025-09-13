@@ -1,23 +1,24 @@
 package com.example.whatsapp.presentation.home
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.whatsapp.R
-import com.example.whatsapp.data.lokal.db.UserProfile
-import com.example.whatsapp.data.repository.user_profile.UserProfileRepository
+import com.example.whatsapp.data.repository.home.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: UserProfileRepository
+    private val homeRepository: HomeRepository
 ): ViewModel()
 {
 
+
+    fun getAvatarUrl(): Flow<String?> {
+        return homeRepository.getAvatarUrl()
+    }
 
     private val _users = MutableStateFlow<List<User>>(
         listOf(
@@ -33,7 +34,4 @@ class HomeViewModel @Inject constructor(
     // Hozirgi user (top bar uchun)
     val currentUser: User? = User("0", "Men", R.drawable.ic_launcher_background, "")
 
-    val user: StateFlow<UserProfile?> =
-        repository.getProfile()
-            .stateIn(viewModelScope, SharingStarted.Lazily, null)
 }
